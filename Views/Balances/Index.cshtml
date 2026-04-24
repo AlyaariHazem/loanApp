@@ -1,0 +1,41 @@
+@model IEnumerable<LoanApp.Models.BalanceViewModel>
+
+@{
+    ViewData["Title"] = "Balances Dashboard";
+}
+
+<h2>Balances Dashboard</h2>
+
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Total Lent</th>
+            <th>Total Borrowed</th>
+            <th>Final Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.EmployeeName</td>
+            <td class="text-success">@item.TotalLent.ToString("C")</td>
+            <td class="text-danger">@item.TotalBorrowed.ToString("C")</td>
+            <td>
+                @if(item.Balance > 0)
+                {
+                    <span class="badge bg-success">@item.Balance.ToString("C")</span>
+                }
+                else if (item.Balance < 0)
+                {
+                    <span class="badge bg-danger">@item.Balance.ToString("C")</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">@item.Balance.ToString("C")</span>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

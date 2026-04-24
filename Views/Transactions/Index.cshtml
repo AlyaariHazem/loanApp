@@ -1,0 +1,33 @@
+@model IEnumerable<LoanApp.Models.LoanTransaction>
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<h2>Transactions</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Transaction</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Lender</th>
+            <th>Borrower</th>
+            <th>Amount</th>
+            <th>Note</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.CreatedAt.ToShortDateString()</td>
+            <td>@item.Lender?.Name</td>
+            <td>@item.Borrower?.Name</td>
+            <td>@item.Amount.ToString("C")</td>
+            <td>@item.Note</td>
+        </tr>
+}
+    </tbody>
+</table>
