@@ -18,10 +18,17 @@ namespace LoanApp.Controllers
         }
 
         // GET: Transactions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var appDbContext = _context.Transactions.Include(t => t.Borrower).Include(t => t.Lender);
-            return View(await appDbContext.ToListAsync());
+            var source = _context.Transactions
+                .Include(t => t.Borrower)
+                .Include(t => t.Lender)
+                .OrderByDescending(t => t.CreatedAt);
+
+            var count = await source.CountAsync();
+            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return View(new PaginatedList<LoanTransaction>(items, count, pageNumber, pageSize));
         }
 
         // GET: Transactions/Create
@@ -52,10 +59,21 @@ namespace LoanApp.Controllers
                 transaction.CreatedAt = System.DateTime.UtcNow;
                 _context.Add(transaction);
                 await _context.SaveChangesAsync();
+                
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true });
+                }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BorrowerId"] = new SelectList(_context.Employees, "Id", "Name", transaction.BorrowerId);
             ViewData["LenderId"] = new SelectList(_context.Employees, "Id", "Name", transaction.LenderId);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView(transaction);
+            }
             return View(transaction);
         }
     }

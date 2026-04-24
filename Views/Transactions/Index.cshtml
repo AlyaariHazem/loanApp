@@ -1,41 +1,57 @@
-@model IEnumerable<LoanApp.Models.LoanTransaction>
+@model PaginatedList<LoanApp.Models.LoanTransaction>
 
 @{
-    ViewData["Title"] = "Transactions";
+    ViewData["Title"] = "التحويلات";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-dark">Transactions</h2>
-    <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'New Transaction')">
-        <i class="bi bi-plus-circle me-2"></i>New Transaction
+    <h2 class="fw-bold text-dark">عمليات التحويل</h2>
+    <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'عملية تحويل جديدة')">
+        <i class="bi bi-plus-circle me-2"></i>تحويل جديد
     </button>
 </div>
 
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
     <div class="table-responsive">
         <table class="table table-hover mb-0 align-middle">
             <thead class="bg-light">
                 <tr>
-                    <th class="ps-4 py-3">Date</th>
-                    <th class="py-3">Lender</th>
-                    <th class="py-3">Borrower</th>
-                    <th class="py-3">Amount</th>
-                    <th class="pe-4 py-3">Note</th>
+                    <th class="ps-4 py-3 text-start">التاريخ</th>
+                    <th class="py-3 text-start">المقرض</th>
+                    <th class="py-3 text-start">المقترض</th>
+                    <th class="py-3 text-start">المبلغ</th>
+                    <th class="pe-4 py-3 text-start">ملاحظات</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td class="ps-4 text-muted">@item.CreatedAt.ToShortDateString()</td>
-                        <td class="fw-medium text-success">@item.Lender?.Name</td>
-                        <td class="fw-medium text-danger">@item.Borrower?.Name</td>
-                        <td class="fw-bold text-dark">@item.Amount.ToString("C")</td>
-                        <td class="pe-4 small text-muted">@item.Note</td>
+                        <td class="ps-4 text-muted text-start">@item.CreatedAt.ToShortDateString()</td>
+                        <td class="fw-medium text-success text-start">@item.Lender?.Name</td>
+                        <td class="fw-medium text-danger text-start">@item.Borrower?.Name</td>
+                        <td class="fw-bold text-dark text-start">@item.Amount.ToString("C")</td>
+                        <td class="pe-4 small text-muted text-start">@item.Note</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link shadow-sm rounded-pill px-3" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">السابق</a>
+        </li>
+        <li class="page-item disabled mx-2">
+            <span class="page-link border-0 bg-transparent text-dark fw-bold">صفحة @Model.PageIndex من @Model.TotalPages</span>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link shadow-sm rounded-pill px-3" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">التالي</a>
+        </li>
+    </ul>
+</nav>
+
+
 

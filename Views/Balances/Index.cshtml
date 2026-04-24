@@ -1,12 +1,12 @@
 @model IEnumerable<LoanApp.Models.BalanceViewModel>
 
 @{
-    ViewData["Title"] = "Balances Dashboard";
+    ViewData["Title"] = "لوحة الأرصدة";
 }
 
 <div class="mb-4">
-    <h2 class="fw-bold text-dark">Balances Dashboard</h2>
-    <p class="text-muted">Overview of all active loans and net balances across the team.</p>
+    <h2 class="fw-bold text-dark">لوحة تحكم الأرصدة</h2>
+    <p class="text-muted">نظرة عامة على جميع القروض النشطة وصافي الأرصدة عبر الفريق.</p>
 </div>
 
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
@@ -14,20 +14,20 @@
         <table class="table table-hover mb-0 align-middle">
             <thead class="bg-light">
                 <tr>
-                    <th class="ps-4 py-3">Employee</th>
-                    <th class="py-3">Total Lent</th>
-                    <th class="py-3">Total Borrowed</th>
-                    <th class="pe-4 py-3 text-end">Final Balance</th>
+                    <th class="ps-4 py-3 text-start">الموظف</th>
+                    <th class="py-3 text-start">إجمالي ما أقرضه</th>
+                    <th class="py-3 text-start">إجمالي ما اقترضه</th>
+                    <th class="pe-4 py-3 text-start">الرصيد النهائي</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="ps-4 fw-medium">@item.EmployeeName</td>
-                        <td class="text-success fw-medium">@item.TotalLent.ToString("C")</td>
-                        <td class="text-danger fw-medium">@item.TotalBorrowed.ToString("C")</td>
-                        <td class="pe-4 text-end">
+                        <td class="ps-4 fw-medium text-start">@item.EmployeeName</td>
+                        <td class="text-success fw-medium text-start">@item.TotalLent.ToString("C")</td>
+                        <td class="text-danger fw-medium text-start">@item.TotalBorrowed.ToString("C")</td>
+                        <td class="pe-4 text-start">
                             @if (item.Balance > 0)
                             {
                                 <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">
@@ -53,4 +53,5 @@
         </table>
     </div>
 </div>
+
 

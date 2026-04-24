@@ -29,6 +29,19 @@ html {
     overflow: hidden;
 }
 
+[dir="rtl"] .modal-header .btn-close {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+[dir="rtl"] .modal-footer > * {
+    margin: 0;
+}
+
+[dir="rtl"] .modal-footer .btn + .btn {
+    margin-right: 0.5rem;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -47,7 +60,25 @@ html {
 body {
   margin-bottom: 60px;
   background-color: #fcfcfc;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.text-start {
+    text-align: right !important;
+}
+
+.text-end {
+    text-align: left !important;
+}
+
+.ms-auto {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+.me-auto {
+    margin-left: auto !important;
+    margin-right: 0 !important;
 }
 
 .feature-card {

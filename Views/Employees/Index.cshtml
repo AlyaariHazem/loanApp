@@ -1,41 +1,57 @@
-@model IEnumerable<LoanApp.Models.Employee>
+@model PaginatedList<LoanApp.Models.Employee>
 
 @{
-    ViewData["Title"] = "Employees";
+    ViewData["Title"] = "الموظفين";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-dark">Employees</h2>
-    <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'Add New Employee')">
-        <i class="bi bi-person-plus me-2"></i>Add New Employee
+    <h2 class="fw-bold text-dark">الموظفين</h2>
+    <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'إضافة موظف جديد')">
+        <i class="bi bi-person-plus me-2"></i>إضافة موظف جديد
     </button>
 </div>
 
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
     <div class="table-responsive">
         <table class="table table-hover mb-0 align-middle">
             <thead class="bg-light">
                 <tr>
-                    <th class="ps-4 py-3">Name</th>
-                    <th class="py-3">Code</th>
-                    <th class="py-3">Department</th>
-                    <th class="py-3">Phone</th>
-                    <th class="pe-4 py-3 text-end text-muted">Joined</th>
+                    <th class="ps-4 py-3 text-start">الاسم</th>
+                    <th class="py-3 text-start">الكود</th>
+                    <th class="py-3 text-start">القسم</th>
+                    <th class="py-3 text-start">الهاتف</th>
+                    <th class="pe-4 py-3 text-start text-muted">تاريخ الانضمام</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td class="ps-4 fw-medium">@item.Name</td>
-                        <td><span class="badge bg-light text-dark border fw-normal">@item.EmployeeCode</span></td>
-                        <td>@item.Department</td>
-                        <td>@item.Phone</td>
-                        <td class="pe-4 text-end text-muted">@item.CreatedAt.ToShortDateString()</td>
+                        <td class="ps-4 fw-medium text-start">@item.Name</td>
+                        <td class="text-start"><span class="badge bg-light text-dark border fw-normal">@item.EmployeeCode</span></td>
+                        <td class="text-start">@item.Department</td>
+                        <td class="text-start">@item.Phone</td>
+                        <td class="pe-4 text-start text-muted">@item.CreatedAt.ToShortDateString()</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link shadow-sm rounded-pill px-3" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">السابق</a>
+        </li>
+        <li class="page-item disabled mx-2">
+            <span class="page-link border-0 bg-transparent text-dark fw-bold">صفحة @Model.PageIndex من @Model.TotalPages</span>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link shadow-sm rounded-pill px-3" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">التالي</a>
+        </li>
+    </ul>
+</nav>
+
+
 

@@ -9,12 +9,41 @@ $(document).ready(function () {
             .then(response => response.text())
             .then(html => {
                 $('#modalBodyContent').html(html);
+                bindAjaxForm();
             })
             .catch(error => {
-                $('#modalBodyContent').html('<div class="alert alert-danger">Error loading content. Please try again.</div>');
+                $('#modalBodyContent').html('<div class="alert alert-danger">خطأ في تحميل المحتوى. يرجى المحاولة مرة أخرى.</div>');
                 console.error('Error:', error);
             });
     };
+
+    function bindAjaxForm() {
+        $('#modalBodyContent form').on('submit', function (e) {
+            e.preventDefault();
+            const form = $(this);
+            const url = form.attr('action');
+            const data = form.serialize();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        $('#actionModal').modal('hide');
+                        window.location.reload();
+                    } else {
+                        // If it's a validation error, partial view is returned
+                        $('#modalBodyContent').html(response);
+                        bindAjaxForm(); // Re-bind for the new form
+                    }
+                },
+                error: function () {
+                    alert("حدث خطأ أثناء حفظ البيانات.");
+                }
+            });
+        });
+    }
 
     // Auto-hide alerts after 5 seconds
     setTimeout(function () {
@@ -26,9 +55,9 @@ $(document).ready(function () {
     if (urlParams.get('openModal') === 'true') {
         const currentPath = window.location.pathname.toLowerCase();
         if (currentPath.includes('transactions')) {
-            showModal('/Transactions/Create', 'New Transaction');
+            showModal('/Transactions/Create', 'عملية تحويل جديدة');
         } else if (currentPath.includes('employees')) {
-            showModal('/Employees/Create', 'Add New Employee');
+            showModal('/Employees/Create', 'إضافة موظف جديد');
         }
     }
 });

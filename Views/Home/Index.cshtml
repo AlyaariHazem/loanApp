@@ -1,33 +1,33 @@
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "الصفحة الرئيسية";
 }
 
 <div class="container mt-5 pt-3">
     <div class="row align-items-center">
         <div class="col-lg-6">
-            <h1 class="display-4 fw-bold text-primary mb-4 animate-fade-in">Internal Employee Loan Tracking</h1>
-            <p class="lead mb-4 animate-fade-in-delayed text-muted">Keep track of money borrowed and lent between employees. Simple, transparent, and efficient.</p>
+            <h1 class="display-4 fw-bold text-primary mb-4 animate-fade-in">نظام تتبع قروض الموظفين</h1>
+            <p class="lead mb-4 animate-fade-in-delayed text-muted">تتبع الأموال المقترضة والمعارة بين الموظفين بسهولة، شفافية وكفاءة.</p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start animate-fade-in-delayed-more">
-                <a asp-controller="Transactions" asp-action="Index" asp-route-openModal="true" class="btn btn-primary btn-lg px-4 me-md-2 shadow rounded-pill">New Transaction</a>
-                <a asp-controller="Balances" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4 shadow-sm rounded-pill">View Balances</a>
+                <a asp-controller="Transactions" asp-action="Index" asp-route-openModal="true" class="btn btn-primary btn-lg px-4 fs-5 shadow rounded-pill">عملية تحويل جديدة</a>
+                <a asp-controller="Balances" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4 fs-5 shadow-sm rounded-pill ms-md-2">عرض الأرصدة</a>
             </div>
         </div>
         <div class="col-lg-6 mt-5 mt-lg-0 animate-fade-in">
             <div class="card shadow border-0 rounded-4 feature-card bg-light">
                 <div class="card-body p-5">
-                    <h3 class="fw-bold mb-4">How it works</h3>
-                    <ul class="list-unstyled text-start mb-0">
+                    <h3 class="fw-bold mb-4">كيف يعمل النظام؟</h3>
+                    <ul class="list-unstyled text-start mb-0 ps-0 pe-0">
                         <li class="mb-3">
-                            <h5 class="fw-bold text-primary">1. Track Loans</h5>
-                            <p class="text-muted">Record when an employee lends money to another with notes.</p>
+                            <h5 class="fw-bold text-primary">1. تتبع القروض</h5>
+                            <p class="text-muted">سجل العمليات عندما يقوم موظف بإعارة مبلغ لآخر مع إضافة الملاحظات.</p>
                         </li>
                         <li class="mb-3">
-                            <h5 class="fw-bold text-primary">2. Real-time Balances</h5>
-                            <p class="text-muted">Instantly see who owes whom and track all running balances.</p>
+                            <h5 class="fw-bold text-primary">2. أرصدة فورية</h5>
+                            <p class="text-muted">شاهد فوراً من يدين لمن وتتبع جميع الأرصدة الجارية.</p>
                         </li>
                         <li class="mb-0">
-                            <h5 class="fw-bold text-primary">3. Simple Dashboard</h5>
-                            <p class="text-muted">Monitor all transactions, employees, and totals in one place.</p>
+                            <h5 class="fw-bold text-primary">3. لوحة تحكم بسيطة</h5>
+                            <p class="text-muted">راقب جميع المعاملات، الموظفين، والإجماليات في مكان واحد.</p>
                         </li>
                     </ul>
                 </div>

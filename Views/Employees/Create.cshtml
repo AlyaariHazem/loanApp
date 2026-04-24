@@ -7,28 +7,23 @@
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
     <div class="mb-3">
-        <label asp-for="Name" class="form-label fw-bold">Full Name</label>
-        <input asp-for="Name" class="form-control rounded-3" placeholder="Enter employee name" />
+        <label asp-for="Name" class="form-label fw-bold">الاسم الكامل</label>
+        <input asp-for="Name" class="form-control rounded-3" placeholder="أدخل اسم الموظف" />
         <span asp-validation-for="Name" class="text-danger small"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="EmployeeCode" class="form-label fw-bold">Employee Code</label>
-        <input asp-for="EmployeeCode" class="form-control rounded-3" placeholder="E.g. EMP-001" />
-        <span asp-validation-for="EmployeeCode" class="text-danger small"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Department" class="form-label fw-bold">Department</label>
-        <input asp-for="Department" class="form-control rounded-3" placeholder="E.g. HR, Engineering" />
+        <label asp-for="Department" class="form-label fw-bold">القسم</label>
+        <input asp-for="Department" class="form-control rounded-3" placeholder="مثلاً: الموارد البشرية، الهندسة" />
         <span asp-validation-for="Department" class="text-danger small"></span>
     </div>
     <div class="mb-4">
-        <label asp-for="Phone" class="form-label fw-bold">Phone Number</label>
-        <input asp-for="Phone" class="form-control rounded-3" placeholder="+1..." />
+        <label asp-for="Phone" class="form-label fw-bold">رقم الهاتف</label>
+        <input asp-for="Phone" class="form-control rounded-3" placeholder="+967..." />
         <span asp-validation-for="Phone" class="text-danger small"></span>
     </div>
     <div class="modal-footer border-0 px-0 pb-0">
-        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary px-4 shadow-sm">Save Employee</button>
+        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">إلغاء</button>
+        <button type="submit" class="btn btn-primary px-4 shadow-sm">حفظ الموظف</button>
     </div>
 </form>
 
