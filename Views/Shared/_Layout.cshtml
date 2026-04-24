@@ -1,3 +1,4 @@
+@inject ICurrentUserService CurrentUser
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -29,16 +30,47 @@
                     <li class="nav-item px-2">
                         <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Home" asp-action="Index">الرئيسية</a>
                     </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Employees" asp-action="Index">الموظفين</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Transactions" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Transactions" asp-action="Index">التحويلات</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Balances" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Balances" asp-action="Index">الأرصدة</a>
-                    </li>
+                    @if (CurrentUser.IsAuthenticated)
+                    {
+                        if (CurrentUser.IsAdmin)
+                        {
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Employees" asp-action="Index">الموظفين</a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Transactions" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Transactions" asp-action="Index">التحويلات</a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Balances" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Balances" asp-action="Index">الأرصدة</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" && ViewContext.RouteData.Values["action"]?.ToString() == "MyProfile" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Employees" asp-action="MyProfile">ملفي الشخصي</a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Transactions" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Transactions" asp-action="Index">تحويلاتي</a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Balances" ? "active fw-bold text-primary" : "text-secondary")" asp-area="" asp-controller="Balances" asp-action="Index">رصيدي</a>
+                            </li>
+                        }
+                    }
                 </ul>
+                <div class="d-flex align-items-center gap-2">
+                    @if (CurrentUser.IsAuthenticated)
+                    {
+                        <span class="badge rounded-pill bg-light text-dark border px-3 py-2">
+                            @CurrentUser.EmployeeName <span class="text-muted">(@CurrentUser.Role)</span>
+                        </span>
+                        <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" asp-controller="Home" asp-action="Login">تبديل المستخدم</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary btn-sm rounded-pill px-3" asp-controller="Home" asp-action="Login">تسجيل الدخول</a>
+                    }
+                </div>
             </div>
         </div>
     </nav>

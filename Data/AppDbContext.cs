@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using LoanApp.Models;
+using LoanApp.Infrastructure;
 
 namespace LoanApp.Data
 {
@@ -13,6 +14,10 @@ namespace LoanApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Employee>()
+                .Property(e => e.Role)
+                .HasDefaultValue(RoleNames.Employee);
 
             // Prevent cascade delete issues when an employee is deleted
             modelBuilder.Entity<LoanTransaction>()

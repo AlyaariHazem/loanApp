@@ -1,0 +1,65 @@
+@model LoanApp.Models.EmployeeEditViewModel
+
+@{
+    ViewData["Title"] = "تعديل الموظف";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="fw-bold text-dark mb-4">تعديل بيانات الموظف</h2>
+
+                <form asp-action="Edit" method="post">
+                    <input asp-for="Id" type="hidden" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label fw-bold">الاسم الكامل</label>
+                        <input asp-for="Name" class="form-control rounded-3" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="EmployeeCode" class="form-label fw-bold">الكود</label>
+                        <input asp-for="EmployeeCode" class="form-control rounded-3" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Department" class="form-label fw-bold">القسم</label>
+                        <input asp-for="Department" class="form-control rounded-3" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Phone" class="form-label fw-bold">رقم الهاتف</label>
+                        <input asp-for="Phone" class="form-control rounded-3" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Role" class="form-label fw-bold">الدور</label>
+                        <select asp-for="Role" class="form-select rounded-3">
+                            <option value="Employee">Employee</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label fw-bold">كلمة مرور جديدة</label>
+                        <input asp-for="Password" type="password" class="form-control rounded-3" placeholder="اتركه فارغاً للإبقاء على كلمة المرور الحالية" />
+                        <div class="form-text">عند إدخال قيمة جديدة سيتم تحديث كلمة المرور وتشفيرها.</div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4 rounded-pill">حفظ التعديلات</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-pill">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,12 +1,13 @@
 @model IEnumerable<LoanApp.Models.BalanceViewModel>
+@inject ICurrentUserService CurrentUser
 
 @{
-    ViewData["Title"] = "لوحة الأرصدة";
+    ViewData["Title"] = CurrentUser.IsAdmin ? "لوحة الأرصدة" : "رصيدي";
 }
 
 <div class="mb-4">
-    <h2 class="fw-bold text-dark">لوحة تحكم الأرصدة</h2>
-    <p class="text-muted">نظرة عامة على جميع القروض النشطة وصافي الأرصدة عبر الفريق.</p>
+    <h2 class="fw-bold text-dark">@(CurrentUser.IsAdmin ? "لوحة تحكم الأرصدة" : "رصيدي")</h2>
+    <p class="text-muted">@(CurrentUser.IsAdmin ? "نظرة عامة على جميع القروض النشطة وصافي الأرصدة عبر الفريق." : "عرض رصيدك الحالي فقط.")</p>
 </div>
 
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">

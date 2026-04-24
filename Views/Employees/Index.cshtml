@@ -17,9 +17,11 @@
             <thead class="bg-light">
                 <tr>
                     <th class="ps-4 py-3 text-start">الاسم</th>
+                    <th class="py-3 text-start">الدور</th>
                     <th class="py-3 text-start">الكود</th>
                     <th class="py-3 text-start">القسم</th>
                     <th class="py-3 text-start">الهاتف</th>
+                    <th class="py-3 text-start">إجراءات</th>
                     <th class="pe-4 py-3 text-start text-muted">تاريخ الانضمام</th>
                 </tr>
             </thead>
@@ -28,9 +30,13 @@
                 {
                     <tr>
                         <td class="ps-4 fw-medium text-start">@item.Name</td>
+                        <td class="text-start"><span class="badge @(item.Role == "Admin" ? "bg-danger" : "bg-secondary")">@item.Role</span></td>
                         <td class="text-start"><span class="badge bg-light text-dark border fw-normal">@item.EmployeeCode</span></td>
                         <td class="text-start">@item.Department</td>
                         <td class="text-start">@item.Phone</td>
+                        <td class="text-start">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3">تعديل</a>
+                        </td>
                         <td class="pe-4 text-start text-muted">@item.CreatedAt.ToShortDateString()</td>
                     </tr>
                 }

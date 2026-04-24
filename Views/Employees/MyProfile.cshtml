@@ -1,0 +1,59 @@
+@model LoanApp.Models.Employee
+
+@{
+    ViewData["Title"] = "ملفي الشخصي";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h2 class="fw-bold text-dark mb-2">ملفي الشخصي</h2>
+                        <p class="text-muted mb-0">عرض بيانات الحساب الحالي فقط.</p>
+                    </div>
+                    <span class="badge @(Model.Role == "Admin" ? "bg-danger" : "bg-secondary") px-3 py-2 rounded-pill">@Model.Role</span>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3">
+                            <div class="small text-muted mb-1">الاسم</div>
+                            <div class="fw-bold">@Model.Name</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3">
+                            <div class="small text-muted mb-1">كود الموظف</div>
+                            <div class="fw-bold">@Model.EmployeeCode</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3">
+                            <div class="small text-muted mb-1">القسم</div>
+                            <div class="fw-bold">@Model.Department</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded-3">
+                            <div class="small text-muted mb-1">الهاتف</div>
+                            <div class="fw-bold">@Model.Phone</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="p-3 bg-light rounded-3">
+                            <div class="small text-muted mb-1">تاريخ الانضمام</div>
+                            <div class="fw-bold">@Model.CreatedAt.ToShortDateString()</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a asp-controller="Transactions" asp-action="Index" class="btn btn-primary rounded-pill px-4">عرض التحويلات</a>
+                    <a asp-controller="Balances" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">عرض الرصيد</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

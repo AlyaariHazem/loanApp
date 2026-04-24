@@ -1,14 +1,21 @@
 @model PaginatedList<LoanApp.Models.LoanTransaction>
+@inject ICurrentUserService CurrentUser
 
 @{
-    ViewData["Title"] = "التحويلات";
+    ViewData["Title"] = CurrentUser.IsAdmin ? "التحويلات" : "تحويلاتي";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-dark">عمليات التحويل</h2>
-    <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'عملية تحويل جديدة')">
-        <i class="bi bi-plus-circle me-2"></i>تحويل جديد
-    </button>
+    <div>
+        <h2 class="fw-bold text-dark">@(CurrentUser.IsAdmin ? "عمليات التحويل" : "تحويلاتي")</h2>
+        <p class="text-muted mb-0">@(CurrentUser.IsAdmin ? "عرض جميع عمليات التحويل." : "عرض العمليات المرتبطة بحسابك فقط.")</p>
+    </div>
+    @if (CurrentUser.IsAdmin)
+    {
+        <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'عملية تحويل جديدة')">
+            <i class="bi bi-plus-circle me-2"></i>تحويل جديد
+        </button>
+    }
 </div>
 
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
