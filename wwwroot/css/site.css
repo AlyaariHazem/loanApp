@@ -2,6 +2,33 @@ html {
   font-size: 14px;
 }
 
+.table thead th {
+    border-bottom: 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    font-weight: 700;
+}
+
+.table tbody td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    font-weight: 500;
+}
+
+.navbar-brand i {
+    font-style: normal;
+}
+
+.modal-content {
+    overflow: hidden;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -19,6 +46,37 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: #fcfcfc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.15)!important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in-delayed {
+    opacity: 0;
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+
+.animate-fade-in-delayed-more {
+    opacity: 0;
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

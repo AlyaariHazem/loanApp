@@ -4,38 +4,53 @@
     ViewData["Title"] = "Balances Dashboard";
 }
 
-<h2>Balances Dashboard</h2>
+<div class="mb-4">
+    <h2 class="fw-bold text-dark">Balances Dashboard</h2>
+    <p class="text-muted">Overview of all active loans and net balances across the team.</p>
+</div>
 
-<table class="table table-striped mt-4">
-    <thead>
-        <tr>
-            <th>Employee</th>
-            <th>Total Lent</th>
-            <th>Total Borrowed</th>
-            <th>Final Balance</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>@item.EmployeeName</td>
-            <td class="text-success">@item.TotalLent.ToString("C")</td>
-            <td class="text-danger">@item.TotalBorrowed.ToString("C")</td>
-            <td>
-                @if(item.Balance > 0)
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4 py-3">Employee</th>
+                    <th class="py-3">Total Lent</th>
+                    <th class="py-3">Total Borrowed</th>
+                    <th class="pe-4 py-3 text-end">Final Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
                 {
-                    <span class="badge bg-success">@item.Balance.ToString("C")</span>
+                    <tr>
+                        <td class="ps-4 fw-medium">@item.EmployeeName</td>
+                        <td class="text-success fw-medium">@item.TotalLent.ToString("C")</td>
+                        <td class="text-danger fw-medium">@item.TotalBorrowed.ToString("C")</td>
+                        <td class="pe-4 text-end">
+                            @if (item.Balance > 0)
+                            {
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">
+                                    +@item.Balance.ToString("C")
+                                </span>
+                            }
+                            else if (item.Balance < 0)
+                            {
+                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-2 rounded-pill">
+                                    @item.Balance.ToString("C")
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-3 py-2 rounded-pill">
+                                    @item.Balance.ToString("C")
+                                </span>
+                            }
+                        </td>
+                    </tr>
                 }
-                else if (item.Balance < 0)
-                {
-                    <span class="badge bg-danger">@item.Balance.ToString("C")</span>
-                }
-                else
-                {
-                    <span class="badge bg-secondary">@item.Balance.ToString("C")</span>
-                }
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
+

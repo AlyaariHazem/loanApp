@@ -4,30 +4,38 @@
     ViewData["Title"] = "Employees";
 }
 
-<h2>Employees</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">Employees</h2>
+    <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'Add New Employee')">
+        <i class="bi bi-person-plus me-2"></i>Add New Employee
+    </button>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add New Employee</a>
-</p>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Code</th>
-            <th>Department</th>
-            <th>Phone</th>
-            <th>Joined</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.EmployeeCode</td>
-            <td>@item.Department</td>
-            <td>@item.Phone</td>
-            <td>@item.CreatedAt.ToShortDateString()</td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4 py-3">Name</th>
+                    <th class="py-3">Code</th>
+                    <th class="py-3">Department</th>
+                    <th class="py-3">Phone</th>
+                    <th class="pe-4 py-3 text-end text-muted">Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="ps-4 fw-medium">@item.Name</td>
+                        <td><span class="badge bg-light text-dark border fw-normal">@item.EmployeeCode</span></td>
+                        <td>@item.Department</td>
+                        <td>@item.Phone</td>
+                        <td class="pe-4 text-end text-muted">@item.CreatedAt.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
