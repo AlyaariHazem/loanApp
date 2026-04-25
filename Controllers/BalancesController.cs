@@ -67,8 +67,8 @@ namespace LoanApp.Controllers
                 {
                     EmployeeId = emp.Id,
                     EmployeeName = emp.Name,
-                    TotalLent = totalLent,
-                    TotalBorrowed = totalBorrowed,
+                    TotalLent = totalLent > totalBorrowed ? totalLent - totalBorrowed : 0,
+                    TotalBorrowed = totalBorrowed > totalLent ? totalBorrowed - totalLent : 0,
                     Balance = totalLent - totalBorrowed,
                     LastOperationDate = lastOperationDate
                 });
@@ -142,7 +142,10 @@ namespace LoanApp.Controllers
                     }
                 }
 
-                var orderedDetails = detailsMap.Values
+                var detailedList = detailsMap.Values.ToList();
+                ApplyAutomaticSettlement(detailedList);
+
+                var orderedDetails = detailedList
                     .OrderByDescending(detail => detail.LastOperationDate ?? DateTime.MinValue)
                     .ThenBy(detail => detail.PersonName)
                     .ToList();
@@ -173,6 +176,39 @@ namespace LoanApp.Controllers
                 .ToList();
 
             return View(new PaginatedList<BalanceViewModel>(pagedBalances, balancesCount, pageNumber, PageSize));
+        }
+
+        private void ApplyAutomaticSettlement(System.Collections.Generic.List<BalancePartyDetailViewModel> details)
+        {
+            // 1. Direct Offset (same person)
+            foreach (var d in details)
+            {
+                if (d.LentToPerson > 0 && d.BorrowedFromPerson > 0)
+                {
+                    decimal min = System.Math.Min(d.LentToPerson, d.BorrowedFromPerson);
+                    d.LentToPerson -= min;
+                    d.BorrowedFromPerson -= min;
+                }
+            }
+
+            // 2. Indirect Offset (cross-person)
+            // Separate into those who owe me (Positive net) and those I owe (Negative net)
+            // We use 'BorrowedFromPerson' as my liability (Negative) and 'LentToPerson' as my asset (Positive)
+            var liabilities = details.Where(d => d.BorrowedFromPerson > 0).OrderByDescending(d => d.BorrowedFromPerson).ToList();
+            var assets = details.Where(d => d.LentToPerson > 0).OrderByDescending(d => d.LentToPerson).ToList();
+
+            foreach (var l in liabilities)
+            {
+                foreach (var a in assets)
+                {
+                    if (l.BorrowedFromPerson == 0) break;
+                    if (a.LentToPerson == 0) continue;
+
+                    decimal settle = System.Math.Min(l.BorrowedFromPerson, a.LentToPerson);
+                    l.BorrowedFromPerson -= settle;
+                    a.LentToPerson -= settle;
+                }
+            }
         }
     }
 }
