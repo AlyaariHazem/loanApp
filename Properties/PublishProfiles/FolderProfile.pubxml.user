@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\publish\LoanApp</_PublishTargetUrl>
-    <History>True|2026-04-25T16:51:15.5507391Z||;True|2026-04-25T19:39:43.1479026+03:00||;True|2026-04-24T21:42:16.7497890+03:00||;True|2026-04-24T19:08:13.0394086+03:00||;</History>
+    <History>True|2026-04-25T17:15:38.8608036Z||;True|2026-04-25T19:51:15.5507391+03:00||;True|2026-04-25T19:39:43.1479026+03:00||;True|2026-04-24T21:42:16.7497890+03:00||;True|2026-04-24T19:08:13.0394086+03:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
