@@ -134,3 +134,66 @@ body {
 .balance-table tbody tr:hover {
     background-color: #f9fbff;
 }
+
+/* Enhanced table style for transactions and balances */
+.data-table {
+    --table-head-start: #f8fbff;
+    --table-head-end: #ecf3ff;
+    --table-head-text: #1f3a6f;
+    --table-border: #e6edf8;
+    --table-row-alt: #fbfdff;
+    --table-row-hover: #f3f8ff;
+}
+
+.data-table thead th {
+    background: linear-gradient(135deg, var(--table-head-start) 0%, var(--table-head-end) 100%);
+    border-bottom: 1px solid #d9e5fb !important;
+    color: var(--table-head-text);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+.data-table tbody td {
+    border-bottom: 1px solid var(--table-border);
+    vertical-align: middle;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: var(--table-row-alt);
+}
+
+.data-table tbody tr {
+    transition: background-color 0.22s ease;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+.data-table td,
+.data-table th {
+    padding-top: 0.95rem;
+    padding-bottom: 0.95rem;
+}
+
+.transactions-table td:nth-child(4),
+.balance-table td:nth-child(2),
+.balance-table td:nth-child(3),
+.balance-table td:nth-child(4) {
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+    .data-table thead th {
+        font-size: 0.8rem;
+    }
+
+    .data-table td,
+    .data-table th {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
