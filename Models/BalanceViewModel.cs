@@ -7,5 +7,6 @@ namespace LoanApp.Models
         public decimal TotalLent { get; set; }
         public decimal TotalBorrowed { get; set; }
         public decimal Balance { get; set; }
+        public DateTime? LastOperationDate { get; set; }
     }
 }

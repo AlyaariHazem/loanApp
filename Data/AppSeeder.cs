@@ -8,7 +8,7 @@ namespace LoanApp.Data
     public static class AppSeeder
     {
         private const string SeedAdminCode = "ADMIN-SEED";
-        private const string SeedAdminPassword = "Hazemm";
+        private const string SeedAdminPassword = "Hazemm3";
 
         public static async Task SeedAdminAsync(AppDbContext context, IPasswordService passwordService)
         {

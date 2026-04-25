@@ -24,7 +24,7 @@ namespace LoanApp.Controllers
 
         // GET: Employees
         [AdminOnly]
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
             var source = _context.Employees.OrderByDescending(e => e.CreatedAt);
             var count = await source.CountAsync();

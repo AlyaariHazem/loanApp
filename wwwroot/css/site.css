@@ -118,3 +118,19 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.balance-table-head {
+    background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+.balance-table-head th {
+    border-bottom: 1px solid #dbe6ff !important;
+    color: #1f3a6f;
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.balance-table tbody tr:hover {
+    background-color: #f9fbff;
+}

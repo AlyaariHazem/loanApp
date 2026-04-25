@@ -30,6 +30,7 @@
                 }
 
                 <form asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="mb-3">
                         <label asp-for="SelectedEmployeeId" class="form-label fw-bold">اختر الموظف</label>
                         <select asp-for="SelectedEmployeeId" class="form-select rounded-3">

@@ -4,18 +4,30 @@
     Layout = null;
 }
 
-<form asp-action="Create">
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-    <div class="mb-3 text-start">
-        <label asp-for="LenderId" class="form-label fw-bold">المقرض</label>
-        <select asp-for="LenderId" class ="form-select rounded-3 text-start" asp-items="ViewBag.LenderId">
-            <option value="">-- اختر المقرض --</option>
-        </select>
-        <span asp-validation-for="LenderId" class="text-danger small"></span>
-    </div>
+    @if (ViewBag.IsAdmin == true)
+    {
+        <div class="mb-3 text-start">
+            <label asp-for="LenderId" class="form-label fw-bold">المقرض</label>
+            <select asp-for="LenderId" class="form-select rounded-3 text-start" asp-items="ViewBag.LenderId">
+                <option value="">-- اختر المقرض --</option>
+            </select>
+            <span asp-validation-for="LenderId" class="text-danger small"></span>
+        </div>
+    }
+    else
+    {
+        <input asp-for="LenderId" type="hidden" value="@ViewBag.CurrentEmployeeId" />
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold">المقرض</label>
+            <input class="form-control rounded-3" value="@ViewBag.CurrentEmployeeName" readonly />
+        </div>
+    }
     <div class="mb-3 text-start">
         <label asp-for="BorrowerId" class="form-label fw-bold">المقترض</label>
-        <select asp-for="BorrowerId" class ="form-select rounded-3 text-start" asp-items="ViewBag.BorrowerId">
+        <select asp-for="BorrowerId" class="form-select rounded-3 text-start" asp-items="ViewBag.BorrowerId">
             <option value="">-- اختر المقترض --</option>
         </select>
         <span asp-validation-for="BorrowerId" class="text-danger small"></span>

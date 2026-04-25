@@ -22,7 +22,7 @@ namespace LoanApp.Controllers
         }
 
         // GET: Transactions
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
             if (!_currentUser.IsAuthenticated)
             {
@@ -47,20 +47,57 @@ namespace LoanApp.Controllers
         }
 
         // GET: Transactions/Create
-        [AdminOnly]
         public IActionResult Create()
         {
-            ViewData["BorrowerId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name");
-            ViewData["LenderId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name");
+            if (!_currentUser.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (_currentUser.IsAdmin)
+            {
+                ViewData["BorrowerId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name");
+                ViewData["LenderId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name");
+                ViewBag.IsAdmin = true;
+            }
+            else
+            {
+                var currentEmployeeId = _currentUser.EmployeeId ?? 0;
+                ViewData["BorrowerId"] = new SelectList(
+                    _context.Employees
+                        .Where(employee => employee.Id != currentEmployeeId)
+                        .OrderBy(employee => employee.Name),
+                    "Id",
+                    "Name");
+                ViewBag.IsAdmin = false;
+                ViewBag.CurrentEmployeeId = currentEmployeeId;
+                ViewBag.CurrentEmployeeName = _currentUser.EmployeeName;
+            }
+
             return View();
         }
 
         // POST: Transactions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdminOnly]
         public async Task<IActionResult> Create(LoanTransaction transaction)
         {
+            if (!_currentUser.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (!_currentUser.IsAdmin)
+            {
+                if (!_currentUser.EmployeeId.HasValue)
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+
+                // Prevent tampering: the regular user is always the lender.
+                transaction.LenderId = _currentUser.EmployeeId.Value;
+            }
+
             if (transaction.LenderId == transaction.BorrowerId)
             {
                 ModelState.AddModelError("", "Lender and Borrower cannot be the same person.");
@@ -84,8 +121,26 @@ namespace LoanApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["BorrowerId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name", transaction.BorrowerId);
-            ViewData["LenderId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name", transaction.LenderId);
+            if (_currentUser.IsAdmin)
+            {
+                ViewData["BorrowerId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name", transaction.BorrowerId);
+                ViewData["LenderId"] = new SelectList(_context.Employees.OrderBy(employee => employee.Name), "Id", "Name", transaction.LenderId);
+                ViewBag.IsAdmin = true;
+            }
+            else
+            {
+                var currentEmployeeId = _currentUser.EmployeeId ?? 0;
+                ViewData["BorrowerId"] = new SelectList(
+                    _context.Employees
+                        .Where(employee => employee.Id != currentEmployeeId)
+                        .OrderBy(employee => employee.Name),
+                    "Id",
+                    "Name",
+                    transaction.BorrowerId);
+                ViewBag.IsAdmin = false;
+                ViewBag.CurrentEmployeeId = currentEmployeeId;
+                ViewBag.CurrentEmployeeName = _currentUser.EmployeeName;
+            }
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {

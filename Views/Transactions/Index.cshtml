@@ -10,7 +10,7 @@
         <h2 class="fw-bold text-dark">@(CurrentUser.IsAdmin ? "عمليات التحويل" : "تحويلاتي")</h2>
         <p class="text-muted mb-0">@(CurrentUser.IsAdmin ? "عرض جميع عمليات التحويل." : "عرض العمليات المرتبطة بحسابك فقط.")</p>
     </div>
-    @if (CurrentUser.IsAdmin)
+    @if (CurrentUser.IsAuthenticated)
     {
         <button type="button" class="btn btn-primary shadow-sm px-4 rounded-pill" onclick="showModal('@Url.Action("Create")', 'عملية تحويل جديدة')">
             <i class="bi bi-plus-circle me-2"></i>تحويل جديد

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using LoanApp.Infrastructure;
 
 namespace LoanApp.Models
@@ -15,10 +16,10 @@ namespace LoanApp.Models
         [Display(Name = "Role")]
         public string Role { get; set; } = RoleNames.Employee;
 
-        [Required]
+        [ValidateNever]
         public string PasswordHash { get; set; } = string.Empty;
 
-        [Required]
+        [ValidateNever]
         public string PasswordSalt { get; set; } = string.Empty;
 
         [NotMapped]
