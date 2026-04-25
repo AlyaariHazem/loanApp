@@ -43,12 +43,22 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label asp-for="NewPassword" class="form-label fw-bold">كلمة مرور جديدة</label>
-                            <input asp-for="NewPassword" type="password" class="form-control rounded-3" placeholder="اتركه فارغاً إذا لا تريد تغييره" />
+                            <div class="input-group overflow-hidden rounded-3 border">
+                                <input asp-for="NewPassword" type="password" id="newPasswordInput" class="form-control border-0 rounded-0" placeholder="اتركه فارغاً إذا لا تريد تغييره" style="box-shadow: none;" />
+                                <button class="btn btn-link text-secondary border-0 rounded-0 bg-white" type="button" id="toggleNewPassword" style="box-shadow: none;">
+                                    <i class="bi bi-eye" id="toggleNewIcon"></i>
+                                </button>
+                            </div>
                             <span asp-validation-for="NewPassword" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
                             <label asp-for="ConfirmNewPassword" class="form-label fw-bold">تأكيد كلمة المرور</label>
-                            <input asp-for="ConfirmNewPassword" type="password" class="form-control rounded-3" placeholder="أعد كتابة كلمة المرور" />
+                            <div class="input-group overflow-hidden rounded-3 border">
+                                <input asp-for="ConfirmNewPassword" type="password" id="confirmPasswordInput" class="form-control border-0 rounded-0" placeholder="أعد كتابة كلمة المرور" style="box-shadow: none;" />
+                                <button class="btn btn-link text-secondary border-0 rounded-0 bg-white" type="button" id="toggleConfirmPassword" style="box-shadow: none;">
+                                    <i class="bi bi-eye" id="toggleConfirmIcon"></i>
+                                </button>
+                            </div>
                             <span asp-validation-for="ConfirmNewPassword" class="text-danger small"></span>
                         </div>
                     </div>
@@ -65,4 +75,25 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            function setupToggle(buttonId, inputId, iconId) {
+                $(buttonId).click(function () {
+                    const passwordInput = $(inputId);
+                    const toggleIcon = $(iconId);
+                    
+                    if (passwordInput.is('[type="password"]') || passwordInput.attr('type') === 'password') {
+                        passwordInput.attr('type', 'text');
+                        toggleIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+                    } else {
+                        passwordInput.attr('type', 'password');
+                        toggleIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+                    }
+                });
+            }
+
+            setupToggle('#toggleNewPassword', '#newPasswordInput', '#toggleNewIcon');
+            setupToggle('#toggleConfirmPassword', '#confirmPasswordInput', '#toggleConfirmIcon');
+        });
+    </script>
 }

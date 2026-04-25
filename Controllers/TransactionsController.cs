@@ -98,14 +98,20 @@ namespace LoanApp.Controllers
                 transaction.LenderId = _currentUser.EmployeeId.Value;
             }
 
+            if (transaction.Amount == 0)
+            {
+                ModelState.AddModelError("Amount", "Amount must be greater than 0 or less than 0");
+            }
+
+            if (transaction.Amount < 0)
+            {
+                (transaction.LenderId, transaction.BorrowerId) = (transaction.BorrowerId, transaction.LenderId);
+                transaction.Amount = Math.Abs(transaction.Amount);
+            }
+
             if (transaction.LenderId == transaction.BorrowerId)
             {
                 ModelState.AddModelError("", "Lender and Borrower cannot be the same person.");
-            }
-
-            if (transaction.Amount <= 0)
-            {
-                ModelState.AddModelError("Amount", "Amount must be greater than 0");
             }
 
             if (ModelState.IsValid)

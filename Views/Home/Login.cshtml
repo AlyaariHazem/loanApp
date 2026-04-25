@@ -4,6 +4,40 @@
     ViewData["Title"] = "تسجيل الدخول";
 }
 
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <style>
+        .ts-control {
+            border-radius: 0.5rem !important;
+            padding: 0.5rem 1rem !important;
+            font-family: inherit;
+            border: 1px solid #dee2e6 !important;
+            background-color: #fff !important;
+        }
+        .ts-wrapper.focus .ts-control {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+            border-color: #86b7fe !important;
+        }
+        .ts-dropdown {
+            border-radius: 0.5rem !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid #e5e7eb !important;
+            margin-top: 5px !important;
+            padding: 5px !important;
+        }
+        .ts-dropdown .active {
+            background-color: #f3f4f6 !important;
+            color: #111827 !important;
+        }
+        .ts-dropdown .option {
+            padding: 8px 12px !important;
+            border-radius: 0.375rem;
+            margin: 2px 0;
+            text-align: right; /* RTL support */
+        }
+    </style>
+}
+
 <div class="row justify-content-center mt-5">
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
@@ -33,7 +67,7 @@
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
                         <label asp-for="SelectedEmployeeId" class="form-label fw-bold">اختر الموظف</label>
-                        <select asp-for="SelectedEmployeeId" class="form-select rounded-3">
+                        <select asp-for="SelectedEmployeeId" id="SelectedEmployeeId" class="form-select rounded-3">
                             <option value="">-- اختر الموظف --</option>
                             @foreach (var employee in Model.Employees)
                             {
@@ -44,7 +78,12 @@
                     </div>
                     <div class="mb-4">
                         <label asp-for="Password" class="form-label fw-bold">كلمة المرور</label>
-                        <input asp-for="Password" type="password" class="form-control rounded-3" placeholder="أدخل كلمة المرور" />
+                        <div class="input-group overflow-hidden rounded-3 shadow-none border">
+                            <input asp-for="Password" type="password" id="passwordInput" class="form-control border-0 rounded-0" placeholder="أدخل كلمة المرور" style="box-shadow: none;" />
+                            <button class="btn btn-link text-secondary border-0 rounded-0 bg-white" type="button" id="togglePassword" style="box-shadow: none;">
+                                <i class="bi bi-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
                     <div class="d-flex gap-2">
@@ -56,3 +95,34 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize Tom Select
+            new TomSelect('#SelectedEmployeeId', {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "-- اختر الموظف --",
+                allowEmptyOption: true
+            });
+
+            $('#togglePassword').click(function () {
+                const passwordInput = $('#passwordInput');
+                const toggleIcon = $('#toggleIcon');
+                
+                if (passwordInput.is('[type="password"]') || passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    toggleIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    toggleIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+                }
+            });
+        });
+    </script>
+}

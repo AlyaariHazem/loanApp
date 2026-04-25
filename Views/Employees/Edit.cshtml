@@ -46,7 +46,12 @@
 
                     <div class="mb-4">
                         <label asp-for="Password" class="form-label fw-bold">كلمة مرور جديدة</label>
-                        <input asp-for="Password" type="password" class="form-control rounded-3" placeholder="اتركه فارغاً للإبقاء على كلمة المرور الحالية" />
+                        <div class="input-group overflow-hidden rounded-3 border">
+                            <input asp-for="Password" type="password" id="editPasswordInput" class="form-control border-0 rounded-0" placeholder="اتركه فارغاً للإبقاء على كلمة المرور الحالية" style="box-shadow: none;" />
+                            <button class="btn btn-link text-secondary border-0 rounded-0 bg-white" type="button" id="toggleEditPassword" style="box-shadow: none;">
+                                <i class="bi bi-eye" id="toggleEditIcon"></i>
+                            </button>
+                        </div>
                         <div class="form-text">عند إدخال قيمة جديدة سيتم تحديث كلمة المرور وتشفيرها.</div>
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
@@ -63,4 +68,20 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#toggleEditPassword').click(function () {
+                const passwordInput = $('#editPasswordInput');
+                const toggleIcon = $('#toggleEditIcon');
+                
+                if (passwordInput.is('[type="password"]')) {
+                    passwordInput.attr('type', 'text');
+                    toggleIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    toggleIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+                }
+            });
+        });
+    </script>
 }

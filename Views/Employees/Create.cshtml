@@ -33,7 +33,12 @@
     </div>
     <div class="mb-4">
         <label asp-for="Password" class="form-label fw-bold">كلمة المرور</label>
-        <input asp-for="Password" type="password" class="form-control rounded-3" placeholder="6 أحرف على الأقل" />
+        <div class="input-group overflow-hidden rounded-3 border">
+            <input asp-for="Password" type="password" id="createPasswordInput" class="form-control border-0 rounded-0" placeholder="6 أحرف على الأقل" style="box-shadow: none;" />
+            <button class="btn btn-link text-secondary border-0 rounded-0 bg-white" type="button" id="toggleCreatePassword" style="box-shadow: none;">
+                <i class="bi bi-eye" id="toggleCreateIcon"></i>
+            </button>
+        </div>
         <div class="form-text">يتم تخزين كلمة المرور بشكل مشفر (Hash + Salt).</div>
         <span asp-validation-for="Password" class="text-danger small"></span>
     </div>
@@ -42,6 +47,23 @@
         <button type="submit" class="btn btn-primary px-4 shadow-sm">حفظ الموظف</button>
     </div>
 </form>
+
+<script>
+    $(document).ready(function () {
+        $('#toggleCreatePassword').off('click').on('click', function () {
+            const passwordInput = $('#createPasswordInput');
+            const toggleIcon = $('#toggleCreateIcon');
+            
+            if (passwordInput.attr('type') === 'password') {
+                passwordInput.attr('type', 'text');
+                toggleIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+            } else {
+                passwordInput.attr('type', 'password');
+                toggleIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+            }
+        });
+    });
+</script>
 
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
