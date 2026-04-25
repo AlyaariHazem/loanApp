@@ -8,6 +8,11 @@
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
             <div class="card-body p-4 p-md-5">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                }
+
                 <div class="d-flex justify-content-between align-items-start mb-4">
                     <div>
                         <h2 class="fw-bold text-dark mb-2">ملفي الشخصي</h2>
@@ -50,6 +55,7 @@
                 </div>
 
                 <div class="mt-4">
+                    <a asp-controller="Employees" asp-action="MyProfileEdit" class="btn btn-outline-primary rounded-pill px-4">تعديل بياناتي</a>
                     <a asp-controller="Transactions" asp-action="Index" class="btn btn-primary rounded-pill px-4">عرض التحويلات</a>
                     <a asp-controller="Balances" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 ms-2">عرض الرصيد</a>
                 </div>

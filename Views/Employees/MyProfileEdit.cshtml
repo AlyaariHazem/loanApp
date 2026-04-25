@@ -1,0 +1,68 @@
+@model LoanApp.Models.EmployeeSelfEditViewModel
+
+@{
+    ViewData["Title"] = "تعديل ملفي الشخصي";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-4 p-md-5">
+                <div class="mb-4">
+                    <h2 class="fw-bold text-dark mb-2">تعديل ملفي الشخصي</h2>
+                    <p class="text-muted mb-0">يمكنك تعديل بياناتك وكلمة المرور، بينما الاسم ثابت ولا يمكن تغييره.</p>
+                </div>
+
+                <form asp-action="MyProfileEdit" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="Id" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="form-label fw-bold">الاسم</label>
+                            <input asp-for="Name" class="form-control rounded-3" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EmployeeCode" class="form-label fw-bold">كود الموظف</label>
+                            <input asp-for="EmployeeCode" class="form-control rounded-3" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Department" class="form-label fw-bold">القسم</label>
+                            <input asp-for="Department" class="form-control rounded-3" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label fw-bold">الهاتف</label>
+                            <input asp-for="Phone" class="form-control rounded-3" />
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="NewPassword" class="form-label fw-bold">كلمة مرور جديدة</label>
+                            <input asp-for="NewPassword" type="password" class="form-control rounded-3" placeholder="اتركه فارغاً إذا لا تريد تغييره" />
+                            <span asp-validation-for="NewPassword" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ConfirmNewPassword" class="form-label fw-bold">تأكيد كلمة المرور</label>
+                            <input asp-for="ConfirmNewPassword" type="password" class="form-control rounded-3" placeholder="أعد كتابة كلمة المرور" />
+                            <span asp-validation-for="ConfirmNewPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">حفظ التغييرات</button>
+                        <a asp-action="MyProfile" class="btn btn-outline-secondary rounded-pill px-4">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

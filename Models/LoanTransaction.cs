@@ -23,7 +23,6 @@ namespace LoanApp.Models
         public Employee? Borrower { get; set; }
 
         [Required]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
         public decimal Amount { get; set; }
 
         public string? Note { get; set; }

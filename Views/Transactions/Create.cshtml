@@ -38,6 +38,7 @@
             <span class="input-group-text bg-light border-end-0">$</span>
             <input asp-for="Amount" class="form-control rounded-end-3 border-start-0 text-start" type="number" step="0.01" placeholder="0.00" />
         </div>
+        <div class="form-text">يمكن إدخال مبلغ سالب لعكس الاتجاه تلقائياً (المقترض يصبح مقرضاً والعكس).</div>
         <span asp-validation-for="Amount" class="text-danger small"></span>
     </div>
     <div class="mb-4 text-start">

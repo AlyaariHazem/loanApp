@@ -157,5 +157,75 @@ namespace LoanApp.Controllers
 
             return View(employee);
         }
+
+        // GET: Employees/MyProfileEdit
+        public async Task<IActionResult> MyProfileEdit()
+        {
+            if (!_currentUser.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var employee = await _currentUser.GetCurrentEmployeeAsync(_context);
+            if (employee == null)
+            {
+                _currentUser.Clear();
+                return RedirectToAction("Login", "Home");
+            }
+
+            var model = new EmployeeSelfEditViewModel
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                EmployeeCode = employee.EmployeeCode,
+                Department = employee.Department,
+                Phone = employee.Phone
+            };
+
+            return View(model);
+        }
+
+        // POST: Employees/MyProfileEdit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MyProfileEdit(EmployeeSelfEditViewModel model)
+        {
+            if (!_currentUser.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var employee = await _currentUser.GetCurrentEmployeeAsync(_context);
+            if (employee == null)
+            {
+                _currentUser.Clear();
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (employee.Id != model.Id)
+            {
+                return Forbid();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Name is intentionally not editable for self profile.
+            employee.Department = model.Department;
+            employee.Phone = model.Phone;
+
+            if (!string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                var (hash, salt) = _passwordService.HashPassword(model.NewPassword);
+                employee.PasswordHash = hash;
+                employee.PasswordSalt = salt;
+            }
+
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "تم تحديث بياناتك بنجاح.";
+            return RedirectToAction(nameof(MyProfile));
+        }
     }
 }
