@@ -63,6 +63,22 @@ body {
   font-family: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.form-control[readonly],
+.form-control:disabled,
+.readonly-field {
+        background-color: #eef3fb !important;
+        border-color: #cfdcf3;
+        color: #4b5d7d;
+        cursor: not-allowed;
+}
+
+.readonly-field:focus,
+.form-control[readonly]:focus,
+.form-control:disabled:focus {
+        box-shadow: none;
+        border-color: #cfdcf3;
+}
+
 .text-start {
     text-align: right !important;
 }
