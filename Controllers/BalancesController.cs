@@ -29,68 +29,53 @@ namespace LoanApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            Employee? currentEmployee = await _currentUser.GetCurrentEmployeeAsync(_context);
-            if (currentEmployee == null)
-            {
-                _currentUser.Clear();
-                return RedirectToAction("Login", "Home");
-            }
-
-            var balances = new List<BalanceViewModel>();
-
+            Employee? currentEmployee = null;
+            var employees = new System.Collections.Generic.List<Employee?>();
             if (_currentUser.IsAdmin)
             {
-                // Efficiently fetch all balances for Admin view
-                var balancesQuery = _context.Employees
-                    .Select(e => new
-                    {
-                        e.Id,
-                        e.Name,
-                        TotalLentRaw = _context.Transactions.Where(t => t.LenderId == e.Id).Sum(t => (decimal?)t.Amount) ?? 0,
-                        TotalBorrowedRaw = _context.Transactions.Where(t => t.BorrowerId == e.Id).Sum(t => (decimal?)t.Amount) ?? 0,
-                        LastOpDate = _context.Transactions
-                            .Where(t => t.LenderId == e.Id || t.BorrowerId == e.Id)
-                            .Max(t => (DateTime?)t.CreatedAt)
-                    });
-
-                var rawData = await balancesQuery.ToListAsync();
-                
-                balances = rawData.Select(d => new BalanceViewModel
-                {
-                    EmployeeId = d.Id,
-                    EmployeeName = d.Name,
-                    TotalLent = d.TotalLentRaw > d.TotalBorrowedRaw ? d.TotalLentRaw - d.TotalBorrowedRaw : 0,
-                    TotalBorrowed = d.TotalBorrowedRaw > d.TotalLentRaw ? d.TotalBorrowedRaw - d.TotalLentRaw : 0,
-                    Balance = d.TotalLentRaw - d.TotalBorrowedRaw,
-                    LastOperationDate = d.LastOpDate
-                }).ToList();
+                employees.AddRange(await _context.Employees.OrderBy(employee => employee.Name).ToListAsync());
             }
             else
             {
-                // Simple fetch for individual user
+                currentEmployee = await _currentUser.GetCurrentEmployeeAsync(_context);
+                employees.Add(currentEmployee);
+            }
+
+            var balances = new System.Collections.Generic.List<BalanceViewModel>();
+
+            foreach (var emp in employees)
+            {
+                if (emp == null)
+                {
+                    _currentUser.Clear();
+                    return RedirectToAction("Login", "Home");
+                }
+
                 var totalLent = await _context.Transactions
-                    .Where(t => t.LenderId == currentEmployee.Id)
-                    .SumAsync(t => (decimal?)t.Amount) ?? 0;
+                    .Where(t => t.LenderId == emp.Id)
+                    .SumAsync(t => t.Amount);
 
                 var totalBorrowed = await _context.Transactions
-                    .Where(t => t.BorrowerId == currentEmployee.Id)
-                    .SumAsync(t => (decimal?)t.Amount) ?? 0;
+                    .Where(t => t.BorrowerId == emp.Id)
+                    .SumAsync(t => t.Amount);
 
                 var lastOperationDate = await _context.Transactions
-                    .Where(t => t.LenderId == currentEmployee.Id || t.BorrowerId == currentEmployee.Id)
+                    .Where(t => t.LenderId == emp.Id || t.BorrowerId == emp.Id)
                     .MaxAsync(t => (DateTime?)t.CreatedAt);
 
                 balances.Add(new BalanceViewModel
                 {
-                    EmployeeId = currentEmployee.Id,
-                    EmployeeName = currentEmployee.Name,
+                    EmployeeId = emp.Id,
+                    EmployeeName = emp.Name,
                     TotalLent = totalLent > totalBorrowed ? totalLent - totalBorrowed : 0,
                     TotalBorrowed = totalBorrowed > totalLent ? totalBorrowed - totalLent : 0,
                     Balance = totalLent - totalBorrowed,
                     LastOperationDate = lastOperationDate
                 });
+            }
 
-                // Detailed balances per person for the current user
+            if (!_currentUser.IsAdmin && currentEmployee != null)
+            {
                 var lent = await _context.Transactions
                     .Where(transaction => transaction.LenderId == currentEmployee.Id)
                     .Include(transaction => transaction.Borrower)
@@ -122,6 +107,7 @@ namespace LoanApp.Controllers
                         detail = new BalancePartyDetailViewModel { PersonName = item.PersonName };
                         detailsMap[item.PersonName] = detail;
                     }
+
                     detail.LentToPerson = item.Amount;
                 }
 
@@ -132,6 +118,7 @@ namespace LoanApp.Controllers
                         detail = new BalancePartyDetailViewModel { PersonName = item.PersonName };
                         detailsMap[item.PersonName] = detail;
                     }
+
                     detail.BorrowedFromPerson = item.Amount;
                 }
 
@@ -164,13 +151,13 @@ namespace LoanApp.Controllers
                     .ToList();
 
                 var detailsCount = orderedDetails.Count;
-                var pagedDetailsItems = orderedDetails
+                var pagedDetails = orderedDetails
                     .Skip((detailsPageNumber - 1) * PageSize)
                     .Take(PageSize)
                     .ToList();
 
                 ViewBag.BalanceDetails = new PaginatedList<BalancePartyDetailViewModel>(
-                    pagedDetailsItems,
+                    pagedDetails,
                     detailsCount,
                     detailsPageNumber,
                     PageSize);
